@@ -29,17 +29,9 @@ class Controller
         $this->addContext("bestellungen", Bestellung::findeAlleBestellungen());
     }
 
-    public function addBestellung()
+    public function findeWeinNachName()
     {
-        if (isset($_POST['bestellung'])) {
-            $bestellung = json_decode($_POST['bestellung']);
-            foreach ($bestellung as $key => $value) {
-
-            }
-            var_dump($bestellung);
-        }
-
-
+        var_dump(Weine::findeWeinNachName($_GET["name"]));
     }
 
     public function WeinAnlegen()
@@ -62,13 +54,19 @@ class Controller
     public function BestellungAnlegen()
     {
         if (isset($_POST['bestellung'])) {
-            $bestellung = json_encode($_POST['bestellung']);
+            $bestellung = $_POST['bestellung'];
+            $ar = explode(',', $bestellung);
+            $temp = array();
+            for ($v = 0; $v < sizeof($ar); $v += 2) {
+                $temp[$ar[$v]] = $ar[$v + 1];
+            }
+            var_dump($temp);
 
             $b = new Bestellung();
             $b->setDatum(date("h:i:sa"));
             $b->setKundeId(1);
             $b->insert();
-            foreach ($bestellung as $key => $value) {
+            foreach ($temp as $key => $value) {
                 $bhw = new Bestellung_hat_Wein();
                 $bhw->setWeinId($key);
                 $bhw->setAnzahl($value);
@@ -76,6 +74,24 @@ class Controller
                 $bhw->insert();
             }
         }
+    }
+
+    public function BestellungAnlegenOhneArray()
+    {
+
+
+        $b = new Bestellung();
+        $b->setDatum(time());
+        $b->setKundeId($_GET["kunde_id"]);
+        $b->insert();
+
+        $bhw = new Bestellung_hat_Wein();
+        $bhw->setWeinId($_GET["wein_id"]);
+        $bhw->setAnzahl($_GET["anzahl"]);
+        $bhw->setBestellungId($b->getId());
+        $bhw->insert();
+
+
     }
 
     public function getKundebyID()

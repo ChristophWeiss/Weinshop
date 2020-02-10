@@ -115,6 +115,13 @@ class Weine implements JsonSerializable
         $query->setFetchMode(PDO::FETCH_CLASS, "Weine");
         return $query->fetch();
     }
+    public static function findeWeinNachName($name)
+    {
+        $sql = "SELECT * FROM wein WHERE name LIKE '%$name%'";
+        $query = Database::getDB()->query($sql);
+        $query->setFetchMode(PDO::FETCH_CLASS, "Weine");
+        return $query->fetch();
+    }
 
 
     public static function findeAllWeine()

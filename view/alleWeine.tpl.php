@@ -99,7 +99,9 @@ and open the template in the editor.
         }
         let id = array.id;
         var td = document.getElementById(array.id);
-        bestellung[id] = td.innerHTML;
+
+
+        bestellung[id] = td.innerHTML
 
 
     }
@@ -108,16 +110,20 @@ and open the template in the editor.
         console.log(bestellung)
         var keys = Object.keys(bestellung);
         var strong = "";
-        console.log(keys.length, "key length", bestellung.length)
+        console.log(keys.length, "keys length")
+        console.log(keys, "keys")
+        console.log(bestellung.length, "bestellung length")
+        console.log(bestellung, "bestellung")
         for (var i = 0; i < keys.length; i++) {
             var z = i;
-            if (z++ < keys.length-1) {
+            if (z++ < keys.length - 1) {
                 strong += keys[i] + "," + bestellung[i + 1] + ",";
 
             } else {
                 strong += keys[i] + "," + bestellung[i + 1];
             }
         }
+
         var postData = strong;
         console.log(postData)
         $.ajax({
